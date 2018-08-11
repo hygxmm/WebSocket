@@ -6,21 +6,32 @@ const static = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa2-cors')
-const Socket = require('socket.io')
-
 const config = require('./../server.config.js')
 const routers = require('./../routers/index')
 const { connect } = require('./../database/index')
 
+const router = require('koa-router');
+
 //允许跨域访问
-app.use(cors({
-    origin: 'http://localhost:8080/',
-    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-    maxAge: 5,
-    credentials: true,
-    allowMethods: ['GET', 'POST'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}))
+app.use(cors())
+
+// app.get('/', (req, res) => {
+//     res.send('lalalalala')
+// })
+// app.use(router.get('/',function(){
+//     this.body = {
+//         msg: '99999999'
+
+//     }
+// }))
+// app.use(cors({
+//     origin: '*',
+//     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//     maxAge: 5,
+//     credentials: true,
+//     allowMethods: ['GET', 'POST'],
+//     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+// }))
 //配置控制台日志中间件
 app.use(convert(logger()))
 //配置ctx.body解析中间件
@@ -33,10 +44,10 @@ connect()
 app.use(routers.routes()).use(routers.allowedMethods())
 
 //引用 webSocket 中间件 
-let io = new Socket(app);
+const server = require('http').Server(app.callback());
+const io = require('socket.io')(server);
 
-// const io = new Socket({ioOptions:{pingTimeout: 10000,pingInterval: 5000}})
-// io.attach(app)
+// io.use(routers.routes()).use(routers.allowedMethods())
 
 //客户端连接上的事件
 io.on('connection', (socket) => {

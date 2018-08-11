@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 
-// const home = require('./home')
+const home = require('./home')
 // const main = require('./main')
 const api = require('./api')
 
@@ -10,7 +10,7 @@ const api = require('./api')
 //     console.log(cook,"89998989-------89898989898")
 // })
 
-// router.use('/main',main.routes(),main.allowedMethods())
+router.use('/',home.routes(),home.allowedMethods())
 router.use('/api',api.routes(),api.allowedMethods())
 
 module.exports = router
