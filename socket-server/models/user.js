@@ -20,7 +20,6 @@ const UserSchema = new Schema({
         match: /^([0-9a-zA-Z]{1,2}|[\u4e00-\u9eff]){1,8}$/,
         index: true
     },
-    salt: String,
     //密码
     password: String,
     //头像

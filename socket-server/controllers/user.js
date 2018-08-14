@@ -1,31 +1,33 @@
 const assert = require('assert');//抛错模块
 const bcrypt = require('bcrypt');//加密模块
 const jwt = require('jwt-simple');//生成 token 模块
-const { isValid } = require('mongoose').Types.ObjectId;//
-
-const randomAvatar = require('./../utils/randomAvatar')
 
 //引入数据模型
-const User = require('../models/user')
-const Group = require('../models/group')
-const Socket = require('../models/socket')
-const Friend = require('../models/friend')
-const Message = require('../models/message')
+const User = require('../models/user.js')
+const Group = require('../models/group.js')
+const Socket = require('../models/socket.js')
+const Friend = require('../models/friend.js')
+const Message = require('../models/message.js')
 
 //引入配置文件
-const config = require('../server.config')
+const config = require('../server.config.js')
+
+//引入工具函数
+const randomAvatar = require('./../utils/randomAvatar.js')
+
 
 /**
- * 
+ * 生成 token
  * @param {user} user 用户 
  * @param {Object} environment 客户端信息
  */
+
 function generateToken(user,environment){
     return jwt.encode({
         user,
         environment,
         expires: Date.now() + config.tokenExpiresTime
-    })
+    }, 'hygx_mm')
 }
 
 module.exports = {
@@ -37,15 +39,13 @@ module.exports = {
         assert(!user, '该用户名已存在');
         const defaultGroup = await Group.findOne({isDefault: true})
         assert(defaultGroup, '默认群组不存在');
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(password,salt)
+        const hash = await bcrypt.hash(password,10)
         let newUser = null;
         try{
             newUser = await User.create({
                 username,
-                password,
-                salt,
-                avatar: randomAvatar()
+                password: hash,
+                avatar: randomAvatar(),
             })
         }catch(err){
             if(err.name === 'ValidationError'){
@@ -56,67 +56,77 @@ module.exports = {
 
         defaultGroup.members.push(newUser)
         await defaultGroup.save()
-
         const token = generateToken(newUser._id,environment)
-
-        ctx.cookies.user = newUser._id
-        await Socket.update({id: ctx.socket.id},{user: newUser._id,os,browser,environment})
-
-        return {
-            _id: newUser._id,
-            avatar: newUser.avatar,
-            username: newUser.username,
-            groups: [{
-                _id: defaultGroup._id,
-                name: defaultGroup.name,
-                avatar: defaultGroup.avatar,
-                creator: defaultGroup.creator,
-                createTime: defaultGroup.createTime,
-                message: []
-            }],
-            friends: [],
-            token,
-            isAdmin: false
+        ctx.cookies.set('SESSION',token,{
+            domain: 'localhost',
+            path: '/',
+            maxAge: 7*24*60*60*1000,
+            httpOnly: false,
+            overwrite: false
+        })
+        ctx.body = {
+            success: true,
+            message: '注册成功'
         }
     },
     async login(ctx) {
-        assert(!ctx.socket.user, '你已经登录了')
         const { username,password,os,browser,environment } = ctx.request.body
         assert(username, '用户名不能为空')
         assert(password, '密码不能为空')
         const user = await User.findOne({ username })
-        assert(!user, '该用户不存在')
+        assert(user, '该用户不存在')
         const isPasswordCorrect = bcrypt.compareSync(password,user.password);
         assert(isPasswordCorrect, '密码错误')
         user.lastLoginTime = Date.now()
         await user.save()
         const groups = await Group.find({members: user},{_id:1,name: 1,avatar: 1,creator: 1,createTime: 1})
-        groups.forEach( group => {
-            ctx.socket.socket.join(group._id)
-        })
         const friends = await Friend.find({from: user._id}).populate('to',{avatar: 1, username: 1});
         const token = generateToken(user._id, environment);
-        ctx.socket.user = user._id;
-        await Socket.update({id: ctx.socket.id},{
-            user: user._id,
-            os,
-            browser,
-            environment
+        ctx.cookies.set('SESSION', token, {
+            domain: 'localhost',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: false,
+            overwrite: false
         })
+        ctx.body = {
+            success: true,
+            message: '登录成功'
+        }
         return {
             _id: user._id,
             avatar: user.avatar,
             username: user.username,
             groups,
             friends,
-            token,
-            isAdmin: user._id.toString() === config.administrator
-
+            token
         }
-
-
-
-
-       
+    },
+    async loginByToken(ctx){
+        const {token,os,browser,environment} = ctx.request.body;
+        assert(token,'token不能为空');
+        let payload = null;
+        try{
+            payload = jwt.decode(token,'hygx_mm')
+        }catch(err){
+            return '非法token'
+        }
+        assert(Date.now() < payload.expires, 'token已过期')
+        assert.equal(environment, payload.environment, '非法登录')
+        const user = await User.findOne({_id: payload.user},{_id: 1,avatar: 1,username: 1,createTime: 1})
+        assert(user, '用户不存在')
+        user.lastLoginTime = Date.now()
+        await user.save()
+        const groups = await Group.find({members: user},{_id: 1,name: 1,avatar: 1,creator: 1,createTime: 1})
+        const friends = await Friend.find({from: user._id}).populate('to',{avatar: 1,username: 1})
+        ctx.body = {
+            success: true,
+            message: '自动登录成功'
+        }
+    },
+    async changeAvatar(ctx){
+        const {avatar,user} = ctx
+        assert(avatar, '头像链接不能为空')
+        await User.update({_id: user,_id},{avatar})
     },
 }

@@ -33,7 +33,10 @@ export default {
             if(this.username && this.password){
                 this.$axios.post('/api/login',{
                     username: this.username,
-                    password: this.password
+                    password: this.password,
+                    os: navigator.platform,
+                    browser: navigator.appCodeName,
+                    environment: navigator.appVersion
                 })
                 .then(res => {
                     let _data = res.data;
@@ -55,7 +58,10 @@ export default {
         handleRegister(){
             this.$axios.post('/api/register',{
                 username: this.username,
-                password: this.password
+                password: this.password,
+                os: navigator.platform,
+                browser: navigator.appCodeName,
+                environment: navigator.appVersion
             })
             .then(res => {
                 let _data = res.data;

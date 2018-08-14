@@ -27,8 +27,29 @@ export default {
         Chat
     },
     created(){
-
-
+        var reg = new RegExp("(^| )" + 'SESSION' + "=([^;]*)(;|$)");
+        let cookie = null;
+        let arr = document.cookie.match(reg)
+        if (arr){
+            cookie = unescape(arr[2]);
+        }
+        if(cookie){
+            this.$axios.post('/api/autoLogin',{
+                token: cookie,
+                os: navigator.platform,
+                browser: navigator.appCodeName,
+                environment: navigator.appVersion
+            })
+            .then(res => {
+                if(res.data.success){
+                    this.$toast.success(res.data.message)
+                    this.isLogin = true
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        }
     },
 };
 </script>

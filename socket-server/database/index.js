@@ -1,11 +1,25 @@
 const mongoose = require('mongoose')
+const Group = require('./../models/group')
 const config = require('./../server.config.js')
-
-// mongoose.Promise = global.Promise
 
 exports.connect = () => {
     //连接数据库
-    mongoose.connect(config.database)
+    mongoose.connect(config.database, async err => {
+        //判断默认群组是否存在
+        if(err){
+            console.error(err)
+            return process.exit(1)
+        }
+        const group = await Group.findOne({isDefault: true})
+        if(!group){
+            const defaultGroup = await Group.create({
+                name: '六度',
+                avatar: '',
+                announcement: 'welcome',
+                isDefault: true
+            })
+        }
+    })
     //最大重连次数
     let maxConnectTimes = 0;
 

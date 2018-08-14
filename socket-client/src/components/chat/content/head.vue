@@ -6,7 +6,7 @@
                     <div class="members_inner ng-scope">
                         <div class="member">
                             <img class="avatar" src="" alt="" title="" />
-                            <p class="nickname ng-binding">时敏</p>
+                            <p class="nickname ng-binding"></p>
                         </div>
                     </div>
                 </div>
@@ -14,7 +14,7 @@
         </div>
         <div class="title_wrap">
             <div class="title poi">
-                <a class="title_name ng-binding">时敏</a>
+                <a class="title_name ng-binding"></a>
                 <i class="web_wechat_down_icon"></i>
             </div>
         </div>

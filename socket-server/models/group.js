@@ -2,12 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const GroupSchema = new Schema({
-    //创建时间
     createTime: {
         type: Date,
         default: Date.now
     },
-    //组名
     name: {
         type: String,
         trim: true,

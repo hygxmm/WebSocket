@@ -19,10 +19,10 @@ export default {
         Content
     },
     created(){
-        this.socket = this.$io.connect('localhost:8888/')
+        this.socket = this.$io.connect('http://localhost:8888/')
     },
     mounted(){
-        this.socket.emit('login',"6666")
+        
     },
     destroyed(){
         this.socket = null
