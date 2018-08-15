@@ -19,7 +19,10 @@ export default {
         Content
     },
     created(){
-        this.socket = this.$io.connect('http://localhost:8888/')
+        this.socket = this.$io.connect('http://localhost:8888/');
+        if(window.Notification && (window.Notification.permission === 'default' || window.Notification.permission === 'denied')){
+            window.Notification.requestPermission()
+        }
     },
     mounted(){
         

@@ -1,5 +1,6 @@
+const config = require('./../server.config.js')
 const AvatarCount = 8;
 module.exports = () => {
-    const number = Math.floor(Math.random() * AvatarCount)
-    return `localhost:8899/avatar/${number}.png`
+    let number = Math.floor(Math.random() * AvatarCount)
+    return `localhost:${config.api_port}/avatar/${number}.png`
 }

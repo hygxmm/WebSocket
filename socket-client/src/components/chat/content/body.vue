@@ -15,6 +15,32 @@
     </div>
 </template>
 
+<script>
+import util from '../../../utils/index.js'
+export default {
+    data(){
+        return {
+
+        }
+    },
+    created(){
+        // let count = 0;
+        // let createNot = setInterval(()=>{
+        //     if(count > 10){
+        //         clearInterval(createNot)
+        //         return
+        //     }
+        //     let title = Math.random().toString(36).substr(2);
+        //     let avatar = `http://localhost:7777/avatar/${Math.ceil(Math.random()*8)}.png`;
+        //     let text  = '测试信息'+Math.random().toString(36).substr(2).repeat(5);
+        //     util.createNewNot(title,avatar,text)
+        //     count++
+        // },500)
+    }
+}
+</script>
+
+
 <style lang="less" scoped>
 .scroll-wrapper{
     position: absolute;

@@ -14,12 +14,18 @@ export default {
     name: "app",
     data(){
         return {
-            isLogin: false
+            isLogin: false,
+            userData: null
         }
     },
     methods: {
-        login(){
-            this.isLogin = true
+        login(data){
+            this.$store.commit('setUser',{
+                id: data.id,
+                name: data.name,
+                avatar: data.avatar
+            })
+            this.isLogin = true;
         }
     },
     components: {
@@ -36,14 +42,12 @@ export default {
         if(cookie){
             this.$axios.post('/api/autoLogin',{
                 token: cookie,
-                os: navigator.platform,
-                browser: navigator.appCodeName,
                 environment: navigator.appVersion
             })
             .then(res => {
                 if(res.data.success){
                     this.$toast.success(res.data.message)
-                    this.isLogin = true
+                    this.login(res.data.data)
                 }
             })
             .catch(err => {

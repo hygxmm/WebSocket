@@ -34,13 +34,11 @@ io.on('connection', (socket) => {
     })
 })
 
-
-//启动api监听端口
+//监听启动端口
+server.listen(config.io_port, () => {
+    console.log(`socket server is runing at port ${config.io_port}`)
+})
+//监听启动端口
 app.listen(config.api_port, () => {
     console.log(`api server is runing at port ${config.api_port}`)
-})
-
-//启动io监听端口
-server.listen(config.io_port,() => {
-    console.log(`socket server is runing at port ${config.io_port}`)
 })

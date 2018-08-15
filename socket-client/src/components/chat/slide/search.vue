@@ -1,7 +1,7 @@
 <template>
     <div class="search_bar">
         <i class="web_wechat_search"></i>
-        <input class="frm_search" type="text" v-model="keyword" @change="search" placeholder="搜索用户">
+        <input class="frm_search" type="text" v-model="keyword" @input="search" placeholder="搜索用户">
     </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
         search(){
             let text = this.keyword;
             if(text){
-                this.$axios.post('/search',{
+                this.$axios.post('/api/search',{
                     name: text
                 }).then(res => {
                     console.log(res)
@@ -24,7 +24,6 @@ export default {
                     console.error(err)
                 })
             }
-
         }
     }
 }

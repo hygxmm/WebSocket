@@ -27,7 +27,7 @@ function generateToken(user,environment){
         user,
         environment,
         expires: Date.now() + config.tokenExpiresTime
-    }, 'hygx_mm')
+    }, config.privateKey)
 }
 
 module.exports = {
@@ -39,7 +39,7 @@ module.exports = {
         assert(!user, '该用户名已存在');
         const defaultGroup = await Group.findOne({isDefault: true})
         assert(defaultGroup, '默认群组不存在');
-        const hash = await bcrypt.hash(password,10)
+        const hash = await bcrypt.hash(password,config.encryptionStrength)
         let newUser = null;
         try{
             newUser = await User.create({
@@ -53,21 +53,9 @@ module.exports = {
             }
             throw err
         }
-
         defaultGroup.members.push(newUser)
         await defaultGroup.save()
-        const token = generateToken(newUser._id,environment)
-        ctx.cookies.set('SESSION',token,{
-            domain: 'localhost',
-            path: '/',
-            maxAge: 7*24*60*60*1000,
-            httpOnly: false,
-            overwrite: false
-        })
-        ctx.body = {
-            success: true,
-            message: '注册成功'
-        }
+        ctx.body = { success: true, message: '注册成功' }
     },
     async login(ctx) {
         const { username,password,os,browser,environment } = ctx.request.body
@@ -79,35 +67,37 @@ module.exports = {
         assert(isPasswordCorrect, '密码错误')
         user.lastLoginTime = Date.now()
         await user.save()
+        //查找与此用户相关联的群组
         const groups = await Group.find({members: user},{_id:1,name: 1,avatar: 1,creator: 1,createTime: 1})
+        //查找与此用户相关联的好友
         const friends = await Friend.find({from: user._id}).populate('to',{avatar: 1, username: 1});
+        //生成 token
         const token = generateToken(user._id, environment);
         ctx.cookies.set('SESSION', token, {
             domain: 'localhost',
             path: '/',
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            maxAge: config.tokenExpiresTime,
             httpOnly: false,
             overwrite: false
         })
         ctx.body = {
             success: true,
-            message: '登录成功'
-        }
-        return {
-            _id: user._id,
-            avatar: user.avatar,
-            username: user.username,
-            groups,
-            friends,
-            token
+            message: '登录成功',
+            data: {
+                _id: user._id,
+                avatar: user.avatar,
+                username: user.username,
+                groups,
+                friends
+            }
         }
     },
     async loginByToken(ctx){
-        const {token,os,browser,environment} = ctx.request.body;
+        const {token,environment} = ctx.request.body;
         assert(token,'token不能为空');
         let payload = null;
         try{
-            payload = jwt.decode(token,'hygx_mm')
+            payload = jwt.decode(token,config.privateKey)
         }catch(err){
             return '非法token'
         }
@@ -121,7 +111,14 @@ module.exports = {
         const friends = await Friend.find({from: user._id}).populate('to',{avatar: 1,username: 1})
         ctx.body = {
             success: true,
-            message: '自动登录成功'
+            message: '自动登录成功',
+            data: {
+                id: user._id,
+                avatar: user.avatar,
+                username: user.username,
+                groups,
+                friends
+            }
         }
     },
     async changeAvatar(ctx){

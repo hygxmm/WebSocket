@@ -44,7 +44,7 @@ export default {
                         this.$toast.success(_data.message)
                         this.username = '';
                         this.password = '';
-                        this.$emit('login')
+                        this.$emit('login',_data.data)
                     }else{
                         this.$toast.error(_data.message)
                         this.password = '';

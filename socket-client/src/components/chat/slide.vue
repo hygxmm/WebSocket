@@ -13,7 +13,8 @@ export default {
     components: {
         Search,
         User
-    }
+    },
+    
     
 }
 </script>
