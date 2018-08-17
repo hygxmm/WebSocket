@@ -2,7 +2,8 @@ import Vue from 'vue'
 import MuseUI from 'muse-ui'
 import Toast from 'muse-ui-toast'
 import Axios from 'axios'
-import socket from 'socket.io-client';
+import socket from 'socket.io-client'
+import store from './store/index.js'
 
 import App from './App.vue'
 
@@ -21,5 +22,10 @@ Vue.prototype.$axios = Axios;
 Vue.config.productionTip = false
 
 new Vue({
-    render: h => h(App)
-}).$mount('#app')
+    el: '#app',
+    store,
+    components: {
+        App
+    },
+    template: '<App/>'
+})

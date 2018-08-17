@@ -2,21 +2,19 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
     state: {
         user: {
             id: null,
             name: null,
             avatar: null,
         },
-        friends: {
-
-        },
-        groups: {
-
-        },
-        sockets: {
-
+        friends: [],
+        groups: [],
+        sockets: [],
+        nowChat: {
+            type: '',//私聊还是群组
+            id: '',
         }
     },
     mutations: {
@@ -24,13 +22,13 @@ const store = new Vuex.Store({
             state.user = {...data}
         },
         setFriends(state,data){
-
+            state.friends = [...data]
         },
         setGroups(state,data){
-
+            state.groups = [...data]
         },
         setSockets(state,data){
-            
+            state.sockets = [...data]
         }
     }
 })

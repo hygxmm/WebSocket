@@ -20,11 +20,14 @@ export default {
     },
     methods: {
         login(data){
+            console.log(data,"-------------")
             this.$store.commit('setUser',{
                 id: data.id,
-                name: data.name,
+                name: data.username,
                 avatar: data.avatar
             })
+            this.$store.commit('setFriends',data.friends)
+            this.$store.commit('setGroups',data.groups)
             this.isLogin = true;
         }
     },

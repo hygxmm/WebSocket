@@ -29,6 +29,10 @@ const io = require('socket.io')(server);
 //客户端连接上的事件
 io.on('connection', (socket) => {
     console.log("客户端连接上啦~")
+    socket.on('login',data => {
+        
+
+    })
     io.on('disconnect', () => {
         console.log("客户端断开连接啦~")
     })
@@ -38,6 +42,7 @@ io.on('connection', (socket) => {
 server.listen(config.io_port, () => {
     console.log(`socket server is runing at port ${config.io_port}`)
 })
+
 //监听启动端口
 app.listen(config.api_port, () => {
     console.log(`api server is runing at port ${config.api_port}`)

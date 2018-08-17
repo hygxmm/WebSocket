@@ -1,11 +1,12 @@
 <template>
     <div class="header">
         <div class="avatar">
-            <img class="img" src="../../../assets/avatar.png">
+            <!-- <img class="img" :src="userData.avatar"> -->
+            <img class="img" src="http://localhost:7777/avatar/5.png">
         </div>
         <div class="info">
             <h3 class="nickname">
-                <span class="display_name" v-text="account.NickName"></span>
+                <span class="display_name" v-text="userData.name"></span>
                 <a class="opt" href="javascript:;" @click="toggleSystemMenu">
                     <i class="web_wechat_add"></i>
                 </a>
@@ -18,10 +19,13 @@
 export default {
     data(){
         return {
-            account: {
-                NickName: "默默",
-            }
+
         }
+    },
+    computed: {
+        userData(){
+            return this.$store.state.user
+        },
     },
     methods: {
         toggleSystemMenu(){
