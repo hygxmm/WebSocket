@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const Group = require('./../models/group')
 const config = require('./../server.config.js')
 
+const randomAvatar = require('./../utils/randomAvatar.js')
+
 exports.connect = () => {
     //连接数据库
     mongoose.connect(config.database, async err => {
@@ -14,7 +16,7 @@ exports.connect = () => {
         if(!group){
             const defaultGroup = await Group.create({
                 name: '六度',
-                avatar: '',
+                avatar: randomAvatar(),
                 announcement: 'welcome',
                 isDefault: true
             })
