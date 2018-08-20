@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="chat_item slide-left" v-for="" @click="">
+        <div class="chat_item slide-left" v-for="socket in sockets" @click="openSocket(socket)">
             <div class="ext">
                 <p class="attr"></p>
                 <p class="no_time">
@@ -8,7 +8,7 @@
                 </p>
             </div>
             <div class="avatar">
-                <img class="img" src="">
+                <img class="img" :src="socket.avatar">
             </div>
             <div class="info">
                 <h3 class="nickname">
@@ -21,6 +21,17 @@
 
 <script>
 export default {
+    computed: {
+        sockets(){
+            return this.$store.state.sockets
+        }
+    },
+    methods: {
+        openSocket(data){
+            console.log(data)
+
+        }
+    }
     
 }
 </script>

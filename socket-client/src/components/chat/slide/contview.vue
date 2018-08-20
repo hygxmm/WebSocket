@@ -5,24 +5,28 @@
 </template>
 
 <script>
-import SocketWrap from './socketWrap.vue'
-import FriendWrap from './friendWrap.vue'
-import GroupWrap from './groupWrap.vue'
+import Socket from './socketWrap.vue'
+import Friend from './friendWrap.vue'
+import Group from './groupWrap.vue'
 export default {
-    props: [ 'prop' ],
-    data(){
-        return {
-            nowComponent: 'GroupWrap'
+    props: {
+        prop: {
+            type: String,
+            default(){
+                return 'Socket'
+            }
         }
     },
     components: {
-        SocketWrap,
-        FriendWrap,
-        GroupWrap
+        Socket,
+        Friend,
+        Group
     },
-    updated() {
-        console.log(this.prop)
-    },
+    computed: {
+        nowComponent(){
+            return this.prop
+        }
+    }
 }
 </script>
 

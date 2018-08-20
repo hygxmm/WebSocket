@@ -1,17 +1,17 @@
 <template>
     <div class="tab">
         <div class="tab_item">
-            <a class="chat" title="聊天" href="#" @click="switchContent('socket')">
+            <a class="chat" title="聊天" href="#" @click="switchContent('Socket')">
                 <i class="web_wechat_tab_chat" :class="{web_wechat_tab_chat_hl: activeIndex == 1}"></i>
             </a>
         </div>
         <div class="tab_item">
-            <a class="chat" title="好友" href="#" @click="switchContent('friend')">
+            <a class="chat" title="好友" href="#" @click="switchContent('Friend')">
                 <i class="web_wechat_tab_friends" :class="{web_wechat_tab_friends_hl: activeIndex == 2}"></i>
             </a>
         </div>
         <div class="tab_item no_extra">
-            <a class="chat" title="群组" href="#" @click="switchContent('group')">
+            <a class="chat" title="群组" href="#" @click="switchContent('Group')">
                 <i class="web_wechat_tab_public" :class="{web_wechat_tab_public_hl: activeIndex == 3}"></i>
             </a>
         </div>

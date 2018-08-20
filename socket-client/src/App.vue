@@ -20,7 +20,6 @@ export default {
     },
     methods: {
         login(data){
-            console.log(data,"-------------")
             this.$store.commit('setUser',{
                 id: data.id,
                 name: data.username,

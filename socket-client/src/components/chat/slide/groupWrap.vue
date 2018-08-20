@@ -3,7 +3,7 @@
         <div v-for="group in groups">
             <div class="contact_item" @click="addToSocket(group)">
                 <div class="avatar">
-                    <img class="img" src="group.avatar">
+                    <img class="img" :src="group.avatar">
                 </div>
                 <div class="info">
                     <h4 class="nickname" v-text="group.name"></h4>
@@ -20,6 +20,12 @@ export default {
 
         }
     },
+    methods: {
+        addToSocket(data){
+            console.log(data,"--------------")
+
+        }
+    },
     computed: {
         groups(){
             return this.$store.state.groups
@@ -29,6 +35,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.contact_item{}
+.contact_item{
+
+}
 
 </style>

@@ -16,7 +16,7 @@ import ContView from './slide/contView.vue'
 export default {
     data(){
         return {
-            nowCont: 'socket'
+            nowCont: 'Socket'
         }
     },
     methods: {

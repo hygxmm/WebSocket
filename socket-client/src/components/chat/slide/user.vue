@@ -1,8 +1,7 @@
 <template>
     <div class="header">
         <div class="avatar">
-            <!-- <img class="img" :src="userData.avatar"> -->
-            <img class="img" src="http://localhost:7777/avatar/5.png">
+            <img class="img" :src="userData.avatar">
         </div>
         <div class="info">
             <h3 class="nickname">
