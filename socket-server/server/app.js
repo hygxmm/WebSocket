@@ -12,11 +12,11 @@ const routers = require('./../routers/index')
 const { connect } = require('./../database/index')
 
 //配置控制台日志中间件
-app.use(convert(logger()))
+app.use(logger())
 //配置ctx.body解析中间件
 app.use(bodyParser())
 //配置静态资源加载中间件
-app.use(convert(static(path.join(__dirname,'./../static'))))
+app.use(static(path.join(__dirname,'./../static')))
 //连接数据库
 connect()
 //初始化路由中间件
@@ -30,7 +30,6 @@ const io = require('socket.io')(server);
 io.on('connection', (socket) => {
     console.log("客户端连接上啦~")
     socket.on('login',data => {
-        
 
     })
     io.on('disconnect', () => {
@@ -39,11 +38,6 @@ io.on('connection', (socket) => {
 })
 
 //监听启动端口
-server.listen(config.io_port, () => {
-    console.log(`socket server is runing at port ${config.io_port}`)
-})
-
-//监听启动端口
-app.listen(config.api_port, () => {
-    console.log(`api server is runing at port ${config.api_port}`)
+server.listen(config.port, () => {
+    console.info(`socket server is runing at port ${config.port}`)
 })

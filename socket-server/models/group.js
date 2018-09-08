@@ -13,7 +13,6 @@ const GroupSchema = new Schema({
         match: /^([0-9a-zA-Z]{1,2}|[\u4e00-\u9eff]){1,8}$/,
         index: true,
     },
-    //头像
     avatar: {
         type: String
     },

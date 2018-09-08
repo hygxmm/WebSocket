@@ -1,8 +1,5 @@
 module.exports = {
-    //api接口
-    api_port: 7777,
-    //io接口
-    io_port: 8888,
+    port: 8888,
     //数据库配置
     database: 'mongodb://localhost:27017/Tease',
     //token 过期时限
