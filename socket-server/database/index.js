@@ -6,7 +6,7 @@ const randomAvatar = require('./../utils/randomAvatar.js')
 
 exports.connect = () => {
     //连接数据库
-    mongoose.connect(config.database, async err => {
+    mongoose.connect(config.database,{useNewUrlParser: true}, async err => {
         //判断默认群组是否存在
         if(err){
             console.error(err)
@@ -50,7 +50,7 @@ exports.connect = () => {
         })
         //链接打开时
         mongoose.connection.once('open',() => {
-            console.log('MongoDB Connected successfully')
+            console.log('数据库连接成功')
             resolve()
         })
     })

@@ -11,15 +11,29 @@
             </a>
         </div>
         <div class="content">
-            <pre class="edit_area" contenteditable="true"></pre>
+            <pre class="edit_area" contenteditable="true" ref="textarea"></pre>
         </div>
         <div class="action">
             <span class="desc">按下Ctrl+Enter换行</span>
-            <a class="btn_send" href="javascript:;" ng-click="sendTextMessage()">发送</a>
+            <span class="btn_send" @click="sendMessage">发送</span>
         </div>
         <div></div>
     </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        sendMessage(){
+            const mes = this.$refs.textarea.innerHTML;
+            
+            console.log(mes,"-----")
+        }
+
+    }
+}
+</script>
+
 
 <style lang="less" scoped>
 .box_ft{

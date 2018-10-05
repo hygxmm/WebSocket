@@ -2,7 +2,7 @@ import Vue from 'vue'
 import MuseUI from 'muse-ui'
 import Toast from 'muse-ui-toast'
 import Axios from 'axios'
-import socket from 'socket.io-client'
+import Socket from 'socket.io-client'
 import store from './store/index.js'
 
 import App from './App.vue'
@@ -16,8 +16,9 @@ Vue.use(Toast, {
     time: 1000
 });
 
+Vue.prototype.$io = Socket.connect('http://localhost:8888/');
+
 Axios.defaults.withCredentials = true;
-Vue.prototype.$io = socket;
 Vue.prototype.$axios = Axios;
 Vue.config.productionTip = false
 

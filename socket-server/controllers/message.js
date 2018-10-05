@@ -8,7 +8,7 @@ const Message = require('../models/message');
 const Socket = require('../models/socket');
 
 //引入工具函数
-const xss = require('../../utils/xss');
+// const xss = require('../../utils/xss');
 
 const FirstTimeMessagesCount = 15;
 const EachFetchMessagesCount = 30;
@@ -35,7 +35,7 @@ module.exports = {
         let messageContent = content;
         if (type === 'text') {
             assert(messageContent.length <= 2048, '消息长度过长');
-            messageContent = xss(content);
+            // messageContent = xss(content);
         } else if (type === 'invite') {
             const group = await Group.findOne({ name: content });
             assert(group, '目标群组不存在');

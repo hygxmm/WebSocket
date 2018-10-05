@@ -2,6 +2,8 @@
 const User = require('../models/user.js')
 const Group = require('../models/group.js')
 
+const uploadFile = require('./../utils/uploadImage.js');
+
 module.exports = {
     async search(ctx){
         const { keywords } = ctx.request.body
@@ -21,4 +23,8 @@ module.exports = {
             }
         }
     },
+    async uploadImage(ctx){
+        const result = await uploadFile(ctx);
+        ctx.body = result
+    }
 }

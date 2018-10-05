@@ -1,6 +1,10 @@
 const assert = require('assert');//抛错模块
 const bcrypt = require('bcrypt');//加密模块
 const jwt = require('jwt-simple');//生成 token 模块
+const Busboy = require('busboy');
+const fs = require('fs');
+const path = require('path');
+
 
 //引入数据模型
 const User = require('../models/user.js')
@@ -59,6 +63,7 @@ module.exports = {
     },
     async login(ctx) {
         const { username,password,os,browser,environment } = ctx.request.body
+        console.log(ctx.request.socket)
         assert(username, '用户名不能为空')
         assert(password, '密码不能为空')
         const user = await User.findOne({ username })
@@ -94,6 +99,7 @@ module.exports = {
     },
     async loginByToken(ctx){
         const {token,environment} = ctx.request.body;
+        console.log(ctx.socket.socket,"---")
         assert(token,'token不能为空');
         let payload = null;
         try{
@@ -125,5 +131,5 @@ module.exports = {
         const {avatar,user} = ctx
         assert(avatar, '头像链接不能为空')
         await User.update({_id: user,_id},{avatar})
-    },
+    }
 }
