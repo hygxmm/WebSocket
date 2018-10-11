@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body{
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .box{
+            padding: 0;
+            width: 300px;
+            height: 500px;
+            border: 5px solid #ccc;
+            list-style: none;
+            overflow: auto;
+            margin: 0 auto;
+        }
+        .box li {
+            width: 100%;
+            height: 20px;
+        }
+        .box li:nth-child(2n){
+            background-color:skyblue;
+        }
+        .box li:nth-child(2n+1){
+            background-color:rosybrown;
+        }
+    </style>
+</head>
+<body>
+        <ul class="box">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li><button class="wow">测试按钮</button></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li><button class="mom">测试按钮</button></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+    <script>
+        //创建观察器实例
+        const observer = new IntersectionObserver(entries => {
+            for (item of entries) {
+                if(item.isIntersecting){
+                    console.log(item)
+                }
+            }
+        })
+        //开始观察 指定观察哪个dom节点 默认是浏览器视窗 
+        observer.observe(document.querySelector('.wow'))
+        //可以观察不同的节点
+        observer.observe(document.querySelector('.mom'))
+        //停止观察
+        // a.unobserve()
+        //关闭观察器
+        // a.disconnect()
+        //具体可参考 http://www.ruanyifeng.com/blog/2016/11/intersectionobserver_api.html
+    </script>
+</body>
+</html>

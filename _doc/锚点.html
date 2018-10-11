@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body{
+            margin: 0;
+            scroll-behavior: smooth;
+        }
+        .button{
+            height: 300px;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            top: 40%;
+            right: 0%;
+        }
+        #one{
+            width: 100%;
+            height: 100vh;
+            background-color: aqua;
+        }
+        #two{
+            width: 100%;
+            height: 100vh;
+            background-color: aquamarine;
+        }
+        #three{
+            width: 100%;
+            height: 100vh;
+            background-color: bisque;
+        }
+        #four{
+            width: 100%;
+            height: 100vh;
+            background-color: brown;
+        }
+        #fire{
+            width: 100%;
+            height: 50px;
+            background-color: violet;
+            
+            position: sticky;
+            top: 0;
+        }
+
+        ::-webkit-scrollbar{
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb{
+            background-color: #c1c1c1;
+            border-radius: 4px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="button">
+        <a href="#one">第一屏</a>
+        <a href="#two">第二屏</a>
+        <a href="#three">第三屏</a>
+        <a href="#four">第四屏</a>
+    </div>
+    <div id="one"></div>
+    <div id="two"></div>
+    <div id="fire">粘性盒子</div>
+    <div id="three"></div>
+    <div id="four"></div>
+    <script>
+        setTimeout(()=>{
+            window.scrollTo(0,500)
+        },2000)
+    </script>
+    
+</body>
+</html>
