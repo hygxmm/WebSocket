@@ -47,7 +47,9 @@ io.on('connection',(socket) => {
     socket.on('login',(data) => {
         user.login(socket,data)
     })
-    socket.on('register',() => {})
+    socket.on('register',(data) => {
+        user.register(socket,data)
+    })
     socket.on('',() => {})
     socket.on('',() => {})
 

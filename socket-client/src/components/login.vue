@@ -41,55 +41,35 @@ export default {
                 this.$io.on('login',(data) => {
                     if(data.success){
                         this.$toast.success(data.message)
-                        // this.username = '';
-                        // this.password = '';
-                        // this.$emit('login',data.data)
                     }else{
                         this.$toast.error(data.message)
                         this.password = '';
                     }
                 })
-                // this.$axios.post('/api/login',)
-                // .then(res => {
-                //     let _data = res.data;
-                //     if(_data.success){
-                //         this.$toast.success(_data.message)
-                //         this.username = '';
-                //         this.password = '';
-                //         this.$emit('login',_data.data)
-                //     }else{
-                //         this.$toast.error(_data.message)
-                //         this.password = '';
-                //     }
-                // })
-                // .catch(err => {
-                //     console.error(err,"登陆错误")
-                // })
             }
         },
         handleRegister(){
-            this.$axios.post('/api/register',{
-                username: this.username,
-                password: this.password,
-                os: navigator.platform,
-                browser: navigator.appCodeName,
-                environment: navigator.appVersion
-            })
-            .then(res => {
-                let _data = res.data;
-                if(_data.success){
-                    this.$toast.success(_data.message)
-                    this.active = 0;
-                    this.password = '';
-                }else{
-                    this.$toast.error(_data.message)
-                    this.username = '';
-                    this.password = '';
-                }
-            })
-            .catch(err => {
-                console.error(err,"注册错误")
-            })
+            if(this.username && this.password){
+
+                this.$io.emit('register',{
+                    username: this.username,
+                    password: this.password,
+                    os: navigator.platform,
+                    browser: navigator.appCodeName,
+                    environment: navigator.appVersion
+                })
+                this.$io.on('register',(data) => {
+                    if(data.success){
+                        this.$toast.success(data.message)
+                        this.active = 0;
+                        this.password = '';
+                    }else{
+                        this.$toast.error(data.message)
+                        this.username = '';
+                        this.password = '';
+                    }
+                })
+            }
         }
     }
 }
