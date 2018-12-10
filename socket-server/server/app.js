@@ -13,8 +13,9 @@ const { connect } = require('./../database/index')
 
 //数据模型
 const Socket = require('./../models/socket')
-
-const socketFn = require('./socket.js')
+//工具函数
+const user = require('../utils/user');
+// const socketFn = require('./socket.js')
 
 //跨域配置
 app.use(cors())
@@ -23,7 +24,10 @@ app.use(logger())
 //配置ctx.body解析中间件
 app.use(bodyParser())
 //配置静态资源加载中间件
-app.use(static(path.join(__dirname,'./../static')))
+app.use(static(path.join(__dirname,'./../static'),{
+    maxAge: 1000*60*60*24*7,
+    gzip: true
+}))
 //初始化路由中间件
 app.use(routers.routes()).use(routers.allowedMethods())
 
@@ -35,18 +39,28 @@ const io = require('socket.io')(server);
 
 //在线用户列表
 const users = new Map()
+
 //客户端连接上的事件
 io.on('connection',(socket) => {
-    socket.emit('system',{id: socket.id,message: '链接成功'})
-    socketFn(io,socket,users)
+    console.log("客户端连接上啦~~")
+    
+    socket.on('login',(data) => {
+        user.login(socket,data)
+    })
+    socket.on('register',() => {})
+    socket.on('',() => {})
+    socket.on('',() => {})
+
+
+    //客户端断开连接
+    socket.on('disconnect', () => {
+        console.log("客户端断开连接啦~~")
+        Socket.remove({id: socket.id})
+        users.delete(socket.id)
+    })
 })
 
-//客户端断开连接
-io.on('disconnect', (socket) => {
-    console.log("客户端断开连接啦~")
-    Socket.remove({id: socket.socket.id})
-    users.delete(socket.id)
-})
+
 
 //监听启动端口
 server.listen(config.port, () => {

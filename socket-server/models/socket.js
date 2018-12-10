@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+//会话消息
 const SocketSchema = new Schema({
+    //创建时间
     createTime: {
         type: Date,
         default: Date.now

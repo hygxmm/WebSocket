@@ -16,9 +16,8 @@ const Message = require('../models/message.js')
 //引入配置文件
 const config = require('../server.config.js')
 
-//引入工具函数
+//随机头像
 const randomAvatar = require('./../utils/randomAvatar.js')
-
 
 /**
  * 生成 token

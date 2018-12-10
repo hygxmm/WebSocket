@@ -31,28 +31,40 @@ export default {
     methods: {
         handleLogin(){
             if(this.username && this.password){
-                this.$axios.post('/api/login',{
+                this.$io.emit('login',{
                     username: this.username,
                     password: this.password,
                     os: navigator.platform,
                     browser: navigator.appCodeName,
                     environment: navigator.appVersion
                 })
-                .then(res => {
-                    let _data = res.data;
-                    if(_data.success){
-                        this.$toast.success(_data.message)
-                        this.username = '';
-                        this.password = '';
-                        this.$emit('login',_data.data)
+                this.$io.on('login',(data) => {
+                    if(data.success){
+                        this.$toast.success(data.message)
+                        // this.username = '';
+                        // this.password = '';
+                        // this.$emit('login',data.data)
                     }else{
-                        this.$toast.error(_data.message)
+                        this.$toast.error(data.message)
                         this.password = '';
                     }
                 })
-                .catch(err => {
-                    console.error(err,"登陆错误")
-                })
+                // this.$axios.post('/api/login',)
+                // .then(res => {
+                //     let _data = res.data;
+                //     if(_data.success){
+                //         this.$toast.success(_data.message)
+                //         this.username = '';
+                //         this.password = '';
+                //         this.$emit('login',_data.data)
+                //     }else{
+                //         this.$toast.error(_data.message)
+                //         this.password = '';
+                //     }
+                // })
+                // .catch(err => {
+                //     console.error(err,"登陆错误")
+                // })
             }
         },
         handleRegister(){
